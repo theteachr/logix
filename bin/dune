@@ -1,0 +1,4 @@
+(executable
+ (public_name logix)
+ (name main)
+ (libraries logix))
