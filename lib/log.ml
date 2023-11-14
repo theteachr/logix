@@ -8,15 +8,18 @@ type t = {
   timestamp : timestamp;
 }
 
+let _make ~message ~level ~timestamp = { message; level; timestamp }
+
 let parse line =
+  let use_line line = Scanf.sscanf line in
   let difficult _ line =
-      Scanf.sscanf line "%c %d %d %[^\n]" (fun _ severity timestamp message ->
+      use_line line "%_c %d %d %[^\n]" (fun severity timestamp message ->
           { level = Log_level.Error severity; timestamp; message })
       |> Option.some
   in
   let simple level line =
     let* level = level in
-    Scanf.sscanf line "%c %d %[^\n]" (fun _ timestamp message ->
+    Scanf.sscanf line "%_c %d %[^\n]" (fun timestamp message ->
         { level; timestamp; message })
     |> Option.some
   in
