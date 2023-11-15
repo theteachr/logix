@@ -12,8 +12,7 @@ let info = make Info
 
 let warn = make Warn
 
-let error severity timestamp message =
-  { level = Error severity; timestamp; message }
+let error severity = make (Error severity)
 
 let parse line =
   let read_log format receiver line =
