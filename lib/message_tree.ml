@@ -7,6 +7,7 @@ type t =
       right : t;
     }
 
+(* TODO: Optimize with tail calls *)
 let rec insert ({ Log.timestamp; _ } as log) = function
   | Leaf -> Node { left = Leaf; log; right = Leaf }
   | Node node when timestamp <= node.log.timestamp ->
@@ -15,6 +16,7 @@ let rec insert ({ Log.timestamp; _ } as log) = function
 
 let build = List.fold_left (Fun.flip insert) Leaf
 
+(* TODO: Optimize with tail calls *)
 let rec in_order = function
   | Leaf -> []
   | Node { left = Leaf; log; right } -> log :: in_order right
