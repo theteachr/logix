@@ -12,7 +12,7 @@ let rec insert ({ Log.timestamp; _ } as log) = function
       Node { node with left = insert log node.left }
   | Node node -> Node { node with right = insert log node.right }
 
-let build logs = List.fold_left (Fun.flip insert) Leaf logs
+let build = List.fold_left (Fun.flip insert) Leaf
 
 let rec in_order = function
   | Leaf -> []
