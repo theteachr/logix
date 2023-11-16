@@ -3,6 +3,7 @@ type t =
   | Node of {
       left : t;
       log : Log.t;
+          (* TODO: Rename `log`, because there's a builtin function with the same name *)
       right : t;
     }
 
