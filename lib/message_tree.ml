@@ -1,3 +1,4 @@
+(* TODO: Create a generic BST *)
 type t =
   | Leaf
   | Node of {
