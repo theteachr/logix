@@ -17,12 +17,12 @@ let log_lines =
 
 let what_went_wrong log_messages =
   log_messages
-  |> List.filter_map Log.parse
-  |> Message_tree.build
-  |> Message_tree.in_order
+  |> List.filter_map Log_entry.parse
+  |> Log_entry_tree.build
+  |> Log_entry_tree.in_order
   |> List.filter_map (fun log ->
-         match log.Log.level with
-         | Error severity when severity > 50 -> Some log.Log.message
+         match log.Log_entry.level with
+         | Error severity when severity > 50 -> Some log.Log_entry.message
          | _ -> None)
 
 let () = what_went_wrong log_lines |> List.iter print_endline
