@@ -3,22 +3,21 @@ type t =
   | Leaf
   | Node of {
       left : t;
-      log : Log_entry.t;
-          (* TODO: Rename `log`, because there's a builtin function with the same name *)
+      entry : Log_entry.t;
       right : t;
     }
 
-(* TODO: Optimize with tail calls *)
-let rec insert ({ Log_entry.timestamp; _ } as log) = function
-  | Leaf -> Node { left = Leaf; log; right = Leaf }
-  | Node node when timestamp <= node.log.timestamp ->
-      Node { node with left = insert log node.left }
-  | Node node -> Node { node with right = insert log node.right }
+(* TCO might not be worth it *)
+
+let rec insert ({ Log_entry.timestamp; _ } as entry) = function
+  | Leaf -> Node { left = Leaf; entry; right = Leaf }
+  | Node node when timestamp <= node.entry.timestamp ->
+      Node { node with left = insert entry node.left }
+  | Node node -> Node { node with right = insert entry node.right }
 
 let build = List.fold_left (Fun.flip insert) Leaf
 
-(* TODO: Optimize with tail calls *)
 let rec in_order = function
   | Leaf -> []
-  | Node { left = Leaf; log; right } -> log :: in_order right
-  | Node { left; log; right } -> in_order left @ (log :: in_order right)
+  | Node { left = Leaf; entry; right } -> entry :: in_order right
+  | Node { left; entry; right } -> in_order left @ (entry :: in_order right)

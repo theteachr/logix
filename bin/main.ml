@@ -1,6 +1,6 @@
 open Logix
 
-let log_lines =
+let lines =
   [
     "I 6 Completed armadillo processing";
     "I 1 Nothing to report";
@@ -16,13 +16,15 @@ let log_lines =
   ]
 
 let what_went_wrong log_messages =
+  let relevant_message Log_entry.({ level; message; _ }) =
+    match level with
+    | Error severity when severity > 50 -> Some message
+    | _ -> None
+  in
   log_messages
   |> List.filter_map Log_entry.parse
   |> Log_entry_tree.build
   |> Log_entry_tree.in_order
-  |> List.filter_map (fun log ->
-         match log.Log_entry.level with
-         | Error severity when severity > 50 -> Some log.Log_entry.message
-         | _ -> None)
+  |> List.filter_map relevant_message
 
-let () = what_went_wrong log_lines |> List.iter print_endline
+let () = what_went_wrong lines |> List.iter print_endline
