@@ -1,7 +1,7 @@
 type timestamp = int
 
 type t = {
-  level : Log_level.t;
+  level : Level.t;
   timestamp : timestamp;
   message : string;
 }

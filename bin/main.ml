@@ -16,15 +16,15 @@ let lines =
   ]
 
 let what_went_wrong log_messages =
-  let relevant_message Log_entry.({ level; message; _ }) =
+  let relevant_message Message.({ level; message; _ }) =
     match level with
     | Error severity when severity > 50 -> Some message
     | _ -> None
   in
   log_messages
-  |> List.filter_map Log_entry.parse
-  |> Log_entry_tree.build
-  |> Log_entry_tree.in_order
+  |> List.filter_map Message.parse
+  |> Message_tree.build
+  |> Message_tree.in_order
   |> List.filter_map relevant_message
 
-let () = what_went_wrong lines |> List.iter print_endline
+let () = lines |> what_went_wrong |> List.iter print_endline

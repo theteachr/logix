@@ -1,7 +1,7 @@
 type timestamp = int
 
 type t = {
-  level : Log_level.t;
+  level : Level.t;
   timestamp : timestamp;
   message : string;
 }
@@ -28,4 +28,4 @@ let parse line =
   scan line
 
 let to_string { level; timestamp; message } =
-  Printf.sprintf "[%d] [%s] %s" timestamp (Log_level.to_string level) message
+  Printf.sprintf "[%d] [%s] %s" timestamp (Level.to_string level) message

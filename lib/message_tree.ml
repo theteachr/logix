@@ -3,13 +3,13 @@ type t =
   | Leaf
   | Node of {
       left : t;
-      entry : Log_entry.t;
+      entry : Message.t;
       right : t;
     }
 
 (* TCO might not be worth it *)
 
-let rec insert ({ Log_entry.timestamp; _ } as entry) = function
+let rec insert Message.({ timestamp; _ } as entry) = function
   | Leaf -> Node { left = Leaf; entry; right = Leaf }
   | Node node when timestamp <= node.entry.timestamp ->
       Node { node with left = insert entry node.left }
