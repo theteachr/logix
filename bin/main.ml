@@ -16,7 +16,7 @@ let lines =
   ]
 
 let what_went_wrong log_messages =
-  let relevant_message Message.({ level; message; _ }) =
+  let relevant_message Message.{ level; message; _ } =
     match level with
     | Error severity when severity > 50 -> Some message
     | _ -> None
